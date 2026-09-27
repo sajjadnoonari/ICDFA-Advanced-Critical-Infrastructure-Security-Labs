@@ -1,0 +1,183 @@
+{
+  "name": "Tank Fill Test",
+  "version": "1.00",
+  "devices": {
+    "openplc": {
+      "id": "openplc",
+      "name": "OpenPLC",
+      "type": "ModbusTCP",
+      "enabled": true,
+      "property": {
+        "address": "172.16.100.137",
+        "port": "502",
+        "slaveid": "1"
+      },
+      "tags": {
+        "tank_level": {
+          "id": "tank_level",
+          "name": "Tank Level",
+          "type": "UInt16",
+          "memaddress": "300000",
+          "address": "1"
+        },
+        "fill_valve": {
+          "id": "fill_valve",
+          "name": "Fill Valve",
+          "type": "Bool",
+          "memaddress": "0",
+          "address": "1"
+        },
+        "drain_valve": {
+          "id": "drain_valve",
+          "name": "Drain Valve",
+          "type": "Bool",
+          "memaddress": "0",
+          "address": "2"
+        }
+      },
+      "polling": 500
+    }
+  },
+  "hmi": {
+    "layout": {
+      "start": "tank_fill_main",
+      "navigation": {
+        "mode": "fix",
+        "type": "inline",
+        "items": [
+          {
+            "icon": "home",
+            "view": "tank_fill_main",
+            "link": "",
+            "text": "Tank Fill"
+          }
+        ]
+      },
+      "header": {}
+    },
+    "views": [
+      {
+        "id": "tank_fill_main",
+        "name": "Tank Fill",
+        "profile": {
+          "width": 1200,
+          "height": 800,
+          "bkcolor": "#bfbfbf"
+        },
+        "variables": {},
+        "svgcontent": "<svg width=\"1200\" height=\"800\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:svg=\"http://www.w3.org/2000/svg\"><rect x=\"0\" y=\"0\" width=\"1200\" height=\"800\" fill=\"#bfbfbf\"/><text x=\"48\" y=\"56\" font-family=\"sans-serif\" font-size=\"30\" font-weight=\"bold\" fill=\"#111111\">Tank Fill SCADA HMI</text><text x=\"48\" y=\"88\" font-family=\"sans-serif\" font-size=\"18\" fill=\"#333333\">Lab 05: Building SCADA HMI</text><line x1=\"190\" y1=\"400\" x2=\"600\" y2=\"400\" stroke=\"#4a86e8\" stroke-width=\"12\"/><line x1=\"600\" y1=\"400\" x2=\"600\" y2=\"290\" stroke=\"#4a86e8\" stroke-width=\"12\"/><g id=\"fill_valve_indicator\" type=\"svg-ext-valve\" fill=\"#808080\" stroke=\"#111111\" font-size=\"14\" font-family=\"sans-serif\" text-anchor=\"middle\"><path d=\"M300,380 L330,400 L300,420 Z\"/><path d=\"M360,380 L330,400 L360,420 Z\"/><rect x=\"322\" y=\"360\" width=\"16\" height=\"80\" fill=\"#808080\"/></g><text x=\"330\" y=\"456\" font-family=\"sans-serif\" font-size=\"18\" text-anchor=\"middle\" fill=\"#111111\">Fill valve</text><rect x=\"600\" y=\"160\" width=\"220\" height=\"330\" rx=\"35\" fill=\"#e1e1e1\" stroke=\"#111111\" stroke-width=\"3\"/><ellipse cx=\"710\" cy=\"160\" rx=\"110\" ry=\"26\" fill=\"#e1e1e1\" stroke=\"#111111\" stroke-width=\"3\"/><ellipse cx=\"710\" cy=\"490\" rx=\"110\" ry=\"26\" fill=\"#e1e1e1\" stroke=\"#111111\" stroke-width=\"3\"/><g id=\"tank_level_gauge\" type=\"svg-ext-gauge_progress\" font-size=\"14\" font-family=\"sans-serif\"><rect id=\"A-tank_level_gauge\" x=\"620\" y=\"178\" width=\"180\" height=\"294\" fill=\"#d7d7d7\" stroke=\"#111111\" stroke-width=\"1\"/><rect id=\"B-tank_level_gauge\" x=\"620\" y=\"354\" width=\"180\" height=\"118\" fill=\"#4a86e8\"/><foreignObject x=\"620\" y=\"178\" width=\"180\" height=\"294\" id=\"H-tank_level_gauge\"></foreignObject></g><text x=\"710\" y=\"540\" font-family=\"sans-serif\" font-size=\"22\" text-anchor=\"middle\" fill=\"#111111\">Tank</text><line x1=\"820\" y1=\"330\" x2=\"900\" y2=\"330\" stroke=\"#111111\" stroke-width=\"3\"/><line x1=\"900\" y1=\"330\" x2=\"900\" y2=\"300\" stroke=\"#111111\" stroke-width=\"3\"/><circle cx=\"930\" cy=\"300\" r=\"34\" fill=\"#d7d7d7\" stroke=\"#111111\" stroke-width=\"2\"/><g id=\"tank_level_value\" type=\"svg-ext-value\" fill=\"#111111\" stroke=\"#111111\" font-size=\"24\" font-family=\"sans-serif\" text-anchor=\"middle\"><text id=\"VAL-tank_level_value\" x=\"930\" y=\"309\">##.##</text></g><text x=\"930\" y=\"360\" font-family=\"sans-serif\" font-size=\"16\" text-anchor=\"middle\" fill=\"#111111\">Level (ft)</text><text x=\"1040\" y=\"188\" font-family=\"sans-serif\" font-size=\"21\" font-weight=\"bold\" text-anchor=\"middle\" fill=\"#111111\">Process status</text><rect x=\"930\" y=\"210\" width=\"220\" height=\"120\" fill=\"#eeeeee\" stroke=\"#555555\"/><text x=\"950\" y=\"248\" font-family=\"sans-serif\" font-size=\"17\" fill=\"#111111\">PLC: OpenPLC</text><text x=\"950\" y=\"278\" font-family=\"sans-serif\" font-size=\"17\" fill=\"#111111\">Protocol: Modbus TCP</text><text x=\"950\" y=\"308\" font-family=\"sans-serif\" font-size=\"17\" fill=\"#111111\">Target: 192.168.1.10:502</text><text x=\"48\" y=\"570\" font-family=\"sans-serif\" font-size=\"24\" font-weight=\"bold\" fill=\"#111111\">Tank Fill Chart</text><g id=\"tank_level_chart\" type=\"svg-ext-html_chart\" fill=\"#ffffff\" font-size=\"14\" font-family=\"sans-serif\" stroke=\"#111111\"><rect x=\"48\" y=\"590\" width=\"1104\" height=\"160\" fill=\"#ffffff\" stroke=\"#777777\"/><foreignObject x=\"48\" y=\"590\" width=\"1104\" height=\"160\" id=\"H-tank_level_chart\"><DIV style=\"width: 100%; height: 100%; vector-effect: non-scaling-stroke;\" id=\"D-tank_level_chart\"></DIV></foreignObject></g></svg>",
+        "items": {
+          "tank_level_gauge": {
+            "id": "tank_level_gauge",
+            "label": "HtmlProgress",
+            "name": "Tank Level",
+            "type": "svg-ext-gauge_progress",
+            "property": {
+              "events": [],
+              "variable": "Tank Level",
+              "variableId": "openplc^~^tank_level",
+              "variableSrc": "openplc",
+              "alarmId": "",
+              "alarmSrc": "",
+              "alarm": "",
+              "alarmColor": "",
+              "ranges": [
+                {
+                  "type": "minmax",
+                  "min": 0,
+                  "max": "10",
+                  "style": [true, true],
+                  "color": "#4a86e8"
+                }
+              ]
+            }
+          },
+          "tank_level_value": {
+            "id": "tank_level_value",
+            "label": "Value",
+            "name": "Tank Level",
+            "type": "svg-ext-value",
+            "property": {
+              "events": [],
+              "variable": "Tank Level",
+              "variableId": "openplc^~^tank_level",
+              "variableSrc": "openplc",
+              "alarmId": "",
+              "alarmSrc": "",
+              "alarm": "",
+              "alarmColor": "",
+              "ranges": [
+                {
+                  "type": "unit",
+                  "min": 0,
+                  "max": 10,
+                  "text": " ft"
+                }
+              ]
+            }
+          },
+          "fill_valve_indicator": {
+            "id": "fill_valve_indicator",
+            "label": "Valve",
+            "name": "Fill Valve",
+            "type": "svg-ext-valve",
+            "property": {
+              "events": [],
+              "variable": "Fill Valve",
+              "variableId": "openplc^~^fill_valve",
+              "variableSrc": "openplc",
+              "alarmId": "",
+              "alarmSrc": "",
+              "alarm": "",
+              "alarmColor": "",
+              "ranges": [
+                {
+                  "type": "range",
+                  "min": "0",
+                  "max": "0",
+                  "color": "#808080"
+                },
+                {
+                  "type": "range",
+                  "min": "1",
+                  "max": "1",
+                  "color": "#00b050"
+                }
+              ]
+            }
+          },
+          "tank_level_chart": {
+            "id": "tank_level_chart",
+            "label": "HtmlChart",
+            "name": "Tank Fill Chart",
+            "type": "svg-ext-html_chart",
+            "property": {
+              "id": "tank_level_trend",
+              "type": "history"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "charts": [
+    {
+      "id": "tank_level_trend",
+      "name": "Tank Fill Chart",
+      "lines": [
+        {
+          "id": "tank_level",
+          "name": "Tank Level",
+          "device": "openplc",
+          "color": "#ff0000"
+        }
+      ]
+    }
+  ],
+  "server": {
+    "id": "0",
+    "name": "Tank Fill SCADA HMI",
+    "type": "FuxaServer",
+    "property": {}
+  }
+}
